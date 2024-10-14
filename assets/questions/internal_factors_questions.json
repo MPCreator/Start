@@ -1,0 +1,131 @@
+[
+  {
+    "id": "I1",
+    "questionText": "¿El ecosistema actual de su start up presenta factores de innovación y emprendimiento que hayan sido útiles para su desarrollo?",
+    "type": "SI_NO"
+  },
+  {
+    "id": "I2",
+    "questionText": "¿Su start up ha sido capaz de adecuarse a los cambios? Mencione un ejemplo.",
+    "type": "TEXTO"
+  },
+  {
+    "id": "I3",
+    "questionText": "¿Su start up busca la innovación?",
+    "type": "SI_NO"
+  },
+  {
+    "id": "I4",
+    "questionText": "¿Tiene experiencia en el sector?",
+    "type": "SI_NO",
+    "subQuestions": [
+      {
+        "id": "I4.1",
+        "questionText": "¿Cuánta?",
+        "type": "ESCALA",
+        "scaleLabels": ["Muy baja", "Baja", "Aceptable", "Considerable", "Elevada"],
+        "minScale": 1,
+        "maxScale": 5,
+        "triggerAnswer": "Sí"
+      }
+    ]
+  },
+  {
+    "id": "I5",
+    "questionText": "¿Tiene experiencia en creación de empresas?",
+    "type": "SI_NO",
+    "subQuestions": [
+      {
+        "id": "I5.1",
+        "questionText": "¿Cuánta?",
+        "type": "ESCALA",
+        "scaleLabels": ["Muy baja", "Baja", "Aceptable", "Considerable", "Elevada"],
+        "minScale": 1,
+        "maxScale": 5,
+        "triggerAnswer": "Sí"
+      }
+    ]
+  },
+  {
+    "id": "I6",
+    "questionText": "¿Cuenta con habilidades técnicas y empresariales?",
+    "type": "SI_NO",
+    "subQuestions": [
+      {
+        "id": "I6.1",
+        "questionText": "¿Cuánta?",
+        "type": "ESCALA",
+        "scaleLabels": ["Muy baja", "Baja", "Aceptable", "Considerable", "Elevada"],
+        "minScale": 1,
+        "maxScale": 5,
+        "triggerAnswer": "Sí"
+      }
+    ]
+  },
+  {
+    "id": "I7",
+    "questionText": "¿Tiene experiencia en Investigación & Desarrollo?",
+    "type": "SI_NO",
+    "subQuestions": [
+      {
+        "id": "I7.1",
+        "questionText": "¿Cuánta?",
+        "type": "ESCALA",
+        "scaleLabels": ["Muy baja", "Baja", "Aceptable", "Considerable", "Elevada"],
+        "minScale": 1,
+        "maxScale": 5,
+        "triggerAnswer": "Sí"
+      }
+    ]
+  },
+  {
+    "id": "I8",
+    "questionText": "¿Tiene experiencia en la gestión empresarial?",
+    "type": "SI_NO",
+    "subQuestions": [
+      {
+        "id": "I8.1",
+        "questionText": "¿Cuánta?",
+        "type": "ESCALA",
+        "scaleLabels": ["Muy baja", "Baja", "Aceptable", "Considerable", "Elevada"],
+        "minScale": 1,
+        "maxScale": 5,
+        "triggerAnswer": "Sí"
+      }
+    ]
+  },
+  {
+    "id": "I9",
+    "questionText": "¿Su start up presenta liderazgo empresarial? Mencione un ejemplo.",
+    "type": "TEXTO"
+  },
+  {
+    "id": "I10",
+    "questionText": "¿Qué tanta motivación tenía al crear su start up?",
+    "type": "ESCALA",
+    "scaleLabels": ["Sin motivación", "Poca motivación", "Motivación moderada", "Considerable motivación", "Elevada motivación"],
+    "minScale": 1,
+    "maxScale": 5
+  },
+  {
+    "id": "I11",
+    "questionText": "¿Los productos/servicios que están planteando son innovadores?",
+    "type": "SI_NO",
+    "subQuestions": [
+      {
+        "id": "I11.1",
+        "questionText": "Defina en qué radica su diferenciación.",
+        "type": "TEXTO",
+        "triggerAnswer": "Sí"
+      }
+    ]
+  },
+  {
+    "id": "I12",
+    "questionText": "¿Qué tanta cultura empresarial hay en su start up?",
+    "type": "ESCALA",
+    "scaleLabels": ["Nada de cultura", "Baja cultura", "Moderada cultura", "Considerable cultura", "Alta cultura"],
+    "minScale": 1,
+    "maxScale": 5
+  }
+]

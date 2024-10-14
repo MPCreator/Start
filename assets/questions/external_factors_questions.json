@@ -1,0 +1,56 @@
+[
+  {
+    "id": "E1",
+    "questionText": "¿Tiene alguna métrica de medición de satisfacción del cliente en su startup?",
+    "type": "SI_NO",
+    "subQuestions": [
+      {
+        "id": "E1.1",
+        "questionText": "¿Según su métrica de satisfacción del cliente, cuán satisfecho está su cliente?",
+        "type": "ESCALA",
+        "scaleLabels": ["Nada satisfecho", "Poco satisfecho", "Neutro", "Satisfecho", "Muy Satisfecho"],
+        "minScale": 1,
+        "maxScale": 5,
+        "triggerAnswer": "Sí"
+      }
+    ]
+  },
+  {
+    "id": "E2",
+    "questionText": "¿Su startup tiene financiamiento (Propia/externa)?",
+    "type": "SI_NO",
+    "subQuestions": [
+      {
+        "id": "2.1",
+        "questionText": "Seleccione en qué categoría de financiación se encuentra su startup.",
+        "type": "MULTIPLE_OPTIONS",
+        "options": ["Ahorros", "Inversores privados", "Inversores profesionales", "Salida a bolsa"],
+        "triggerAnswer": "Sí"
+      }
+    ]
+  },
+  {
+    "id": "E3",
+    "questionText": "¿Está siendo incubado en alguna incubadora de empresas?",
+    "type": "SI_NO"
+  },
+  {
+    "id": "E4",
+    "questionText": "¿Ha recibido o está recibiendo apoyo gubernamental (Económico, Tutoría, etc)?",
+    "type": "SI_NO"
+  },
+  {
+    "id": "E5",
+    "questionText": "¿En dónde se encuentra ubicada tu start up?",
+    "type": "COMBO_BOX",
+    "options": ["Nacional", "Extranjero"]
+  },
+  {
+    "id": "E6",
+    "questionText": "¿Qué tanto influyen las políticas estatales científicas y tecnológicas en tu start up?",
+    "type": "ESCALA",
+    "scaleLabels": ["Casi nada de influencia", "Muy poca influencia", "Influencia media", "Elevada influencia", "Dependencia"],
+    "minScale": 1,
+    "maxScale": 5
+  }
+]

@@ -1,0 +1,58 @@
+[
+  {
+    "id": "C1",
+    "questionText": "¿La startup cuenta con un producto o servicio mínimamente viable (MVP)?",
+    "type": "SI_NO"
+  },
+  {
+    "id": "C2",
+    "questionText": "¿Su startup ha comenzado a comercializar el producto o servicio en el mercado?",
+    "type": "SI_NO"
+  },
+  {
+    "id": "C3",
+    "questionText": "¿La empresa ha generado ingresos?",
+    "type": "SI_NO",
+    "subQuestions": [
+      {
+        "id": "C3.1",
+        "questionText": "¿Cuál es el nivel de recurrencia de los ingresos?",
+        "type": "MULTIPLE_OPTIONS",
+        "options": ["Baja recurrencia", "Recurrente con ingresos bajos", "Recurrente con ingresos moderados", "Recurrente con ingresos altos"],
+        "triggerAnswer": "Sí"
+      }
+    ]
+  },
+  {
+    "id": "C4",
+    "questionText": "¿Cuántos empleados tiene actualmente la startup?",
+    "type": "MULTIPLE_OPTIONS",
+    "options": ["Menos de 11", "Entre 11 y 50", "Más de 50"]
+  },
+  {
+    "id": "C5",
+    "questionText": "¿La empresa ha validado su producto o servicio en el mercado con pruebas de concepto?",
+    "type": "SI_NO"
+  },
+  {
+    "id": "C6",
+    "questionText": "¿Cuál es el mayor tipo de financiación que ha recibido la empresa hasta ahora?",
+    "type": "MULTIPLE_OPTIONS",
+    "options": ["Ahorros", "Inversores Privados", "Inversores Profesionales", "Salida a bolsa"]
+  },
+  {
+    "id": "C7",
+    "questionText": "¿Está la empresa en proceso de escalar su producto o servicio en nuevos mercados o segmentos?",
+    "type": "SI_NO"
+  },
+  {
+    "id": "C8",
+    "questionText": "¿Cuenta la empresa con una base de clientes estable y en crecimiento?",
+    "type": "SI_NO"
+  },
+  {
+    "id": "C9",
+    "questionText": "¿Está en proceso de una salida a bolsa para captar financiación?",
+    "type": "SI_NO"
+  }
+]
