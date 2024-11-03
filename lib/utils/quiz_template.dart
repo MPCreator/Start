@@ -159,7 +159,10 @@ abstract class BaseQuizScreen<T extends StatefulWidget> extends State<T> {
       width: AppSizes.customSizeWidth(context, 0.3),
       child: ElevatedButton(
         onPressed: _validateAndProceed,
-        child: Text(currentIndex < questions.length - 1 ? 'Siguiente' : 'Finalizar'),
+        child: Text(
+          currentIndex < questions.length - 1 ? 'Siguiente' : 'Finalizar',
+          style: TextStyle(fontSize: AppSizes.customSizeWidth(context, 0.03)),
+        ),
       ),
     );
   }

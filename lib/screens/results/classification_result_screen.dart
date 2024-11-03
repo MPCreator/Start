@@ -34,6 +34,7 @@ class ClassificationResultScreen extends StatelessWidget {
 
     String phaseResult = evaluationService.determinarFase(answers);
 
+
     return Scaffold(
       appBar: AppBar(
         title: const Center(child: Text("Resultados de Clasificación")),
@@ -94,7 +95,7 @@ class ClassificationResultScreen extends StatelessWidget {
               height: AppSizes.customSizeHeight(context, 0.05),
               width:  AppSizes.customSizeWidth(context, 0.4),
               child: ElevatedButton(
-                onPressed: () {
+                onPressed: () async {
                   if (phaseResult == "Semilla" || phaseResult == "Temprana") {
                     Navigator.pushNamed(context, '/factor_selector');
                   } else {
@@ -108,9 +109,9 @@ class ClassificationResultScreen extends StatelessWidget {
                           actions: [
                             TextButton(
                               onPressed: () {
-                                Navigator.pop(context); // Cierra el diálogo
+                                Navigator.pop(context);
                                 Navigator.pushNamedAndRemoveUntil(
-                                    context, '/home', (route) => false); // Regresa a /home
+                                    context, '/home', (route) => false);
                               },
                               child: const Text("Entendido"),
                             ),

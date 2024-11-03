@@ -39,8 +39,8 @@ class Question {
       scaleLabels: json['scaleLabels'] != null
           ? List<String>.from(json['scaleLabels'])
           : null,
-      minScale: json['minScale'] != null ? json['minScale'].toDouble() : null,
-      maxScale: json['maxScale'] != null ? json['maxScale'].toDouble() : null,
+      minScale: json['minScale']?.toDouble(),
+      maxScale: json['maxScale']?.toDouble(),
     );
   }
 }

@@ -7,7 +7,7 @@ class SubQuestionWidget extends StatelessWidget {
   final SubQuestion subQuestion;
   final ValueChanged<String> onAnswerChanged;
 
-  SubQuestionWidget({
+  const SubQuestionWidget({super.key, 
     required this.subQuestion,
     required this.onAnswerChanged,
   });

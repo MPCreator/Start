@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:start/utils/sizes.dart';
 import '../models/question.dart';
 
 class AnswerWidget extends StatelessWidget {

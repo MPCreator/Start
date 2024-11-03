@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "25741001724",
+    "project_id": "start-fe911",
+    "storage_bucket": "start-fe911.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:25741001724:android:294ecff697ff5351f2a879",
+        "android_client_info": {
+          "package_name": "com.example.start"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAisf6j1kOuG_c7kO5KxeW7xupC_G_3ca4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

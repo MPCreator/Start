@@ -1,11 +1,14 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:start/utils/sizes.dart';
 import '../../models/answers.dart';
 import '../../providers/answer_provider.dart';
 import '../../providers/theme_provider.dart';
+import '../../services/classification_evaluation_service.dart';
 import '../../services/factors_evaluation_service.dart';
 import '../../services/gemini_service.dart';
 
@@ -17,10 +20,13 @@ class EvaluationResultScreen extends StatefulWidget {
 }
 
 class _EvaluationResultScreenState extends State<EvaluationResultScreen> {
+  String evaluationResult = '';
   String phaseResult = '';
   List<Answer>? answers;
-  Future<String>? futurePhaseResult;
+  Future<String>? futureEvaluationResult;
   late Future<String?> futureInterpretation;
+  late List<dynamic> updatedJsonList;
+  String? cachedInterpretation;
 
   @override
   void initState() {
@@ -43,7 +49,7 @@ class _EvaluationResultScreenState extends State<EvaluationResultScreen> {
       answerProvider.clearAnswers(quizId);
 
       // Iterar sobre el jsonList y agregar las respuestas al AnswerProvider
-      jsonList.forEach((json) {
+      for (var json in jsonList) {
         String id = json['id'];
         String questionText = json['question'];
         String? answer = json['answer'];
@@ -61,24 +67,31 @@ class _EvaluationResultScreenState extends State<EvaluationResultScreen> {
             ),
           ],
         );
-      });
+      }
 
       // Crear la instancia del servicio de evaluación con el provider
       final FactorsEvaluationService evaluationService = FactorsEvaluationService(answerProvider: answerProvider);
+      final ClassificationEvaluationService classificationService = ClassificationEvaluationService();
+
 
       // Evaluar las respuestas de manera asíncrona y actualizar el estado
-      futurePhaseResult = evaluationService.determinarExito(quizId);
-      futurePhaseResult!.then((result) {
+      futureEvaluationResult = evaluationService.determinarExito(quizId);
+      futureEvaluationResult!.then((result) {
         setState(() {
-          phaseResult = result;
+          evaluationResult = result;
           answers = answerProvider.getAnswers(quizId);
-
+          phaseResult = classificationService.determinarFase(answers!);
           // Obtener las respuestas actualizadas en formato JSON
           String updatedAnswersJson = answerProvider.getAnswersAsJson(quizId);
-          List<dynamic> updatedJsonList = json.decode(updatedAnswersJson);
+          updatedJsonList = json.decode(updatedAnswersJson);
 
           // Ahora pasa el jsonList actualizado a fetchGeminiInterpretations
           futureInterpretation = fetchGeminiInterpretations(updatedJsonList);
+          futureInterpretation.then((interpretation) {
+            setState(() {
+              cachedInterpretation = interpretation;
+            });
+          });
         });
       });
     });
@@ -135,6 +148,40 @@ class _EvaluationResultScreenState extends State<EvaluationResultScreen> {
     return combinedResponse;
   }
 
+  Future<void> _saveEvaluationResults(String phase, String evaluation, List<Answer> combinedAnswers, String recommendations) async {
+    User? currentUser = FirebaseAuth.instance.currentUser;
+    if (currentUser == null) {
+      print("Usuario no autenticado");
+      return;
+    }
+
+    // Formatear las respuestas y recomendaciones en el formato Firestore
+    List<Map<String, dynamic>> answersList = combinedAnswers.map((answer) => answer.toMap()).toList();
+
+    // Crea un nuevo mapa para el cuestionario con la fecha obtenida localmente
+    Map<String, dynamic> newQuestionnaire = {
+      'fase': phase,
+      'respuestas': answersList,
+      'evaluacion': evaluation,
+      'recomendaciones': recommendations,
+      'fecha': DateTime.now(),
+    };
+
+    try {
+      // Agrega el nuevo cuestionario al historial usando arrayUnion
+      await FirebaseFirestore.instance.collection('usuarios').doc(currentUser.uid).update({
+        'historial_cuestionarios': FieldValue.arrayUnion([newQuestionnaire]),
+      });
+      print("Cuestionario agregado al historial exitosamente.");
+    } catch (e) {
+      print("Error al guardar los resultados de la evaluación: $e");
+    }
+  }
+
+
+
+
+
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
@@ -161,7 +208,7 @@ class _EvaluationResultScreenState extends State<EvaluationResultScreen> {
             SizedBox(height: AppSizes.mediumSpace(context)),
             Center(
               child: FutureBuilder<String>(
-                future: futurePhaseResult,
+                future: futureEvaluationResult,
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const CircularProgressIndicator();
@@ -171,13 +218,13 @@ class _EvaluationResultScreenState extends State<EvaluationResultScreen> {
                     return Container(
                       padding: EdgeInsets.all(AppSizes.customSizeHeight(context, 0.016)),
                       decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.background,
+                        color: Theme.of(context).colorScheme.surface,
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: Column(
                         children: [
                           Text(
-                            'Fase de la Startup: ${snapshot.data}',
+                            'Evaluación de la Startup: ${snapshot.data}',
                             style: Theme.of(context).textTheme.titleLarge?.copyWith(
                               fontWeight: FontWeight.bold,
                             ),
@@ -187,7 +234,7 @@ class _EvaluationResultScreenState extends State<EvaluationResultScreen> {
                             future: futureInterpretation,
                             builder: (context, interpretationSnapshot) {
                               if (interpretationSnapshot.connectionState == ConnectionState.waiting) {
-                                return const CircularProgressIndicator(); // Indicador de carga mientras se obtiene la interpretación
+                                return const CircularProgressIndicator();
                               } else if (interpretationSnapshot.hasError) {
                                 return Text('Error: ${interpretationSnapshot.error}');
                               } else if (interpretationSnapshot.hasData && interpretationSnapshot.data != null) {
@@ -202,11 +249,14 @@ class _EvaluationResultScreenState extends State<EvaluationResultScreen> {
                           ),
                           SizedBox(height: AppSizes.customSizeHeight(context, 0.02)),
                           ElevatedButton(
-                            onPressed: () {
+                            onPressed: () async {
+                              String? recommendations = cachedInterpretation ?? await fetchGeminiInterpretations(updatedJsonList);
+                              await _saveEvaluationResults(phaseResult ,evaluationResult, answers!, recommendations!);
                               Navigator.pushNamed(context, '/factor_selector');
                             },
                             child: const Text("Finalizar"),
                           ),
+
                         ],
                       ),
                     );

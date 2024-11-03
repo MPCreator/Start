@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:start/providers/answer_provider.dart';
 import 'package:start/providers/theme_provider.dart';
+import 'package:start/screens/auth/login_screen.dart';
+import 'package:start/screens/auth/register_screen.dart';
+import 'package:start/screens/historial_screen.dart';
+import 'package:start/screens/main_screen.dart';
 import 'package:start/screens/quizzez/clasification_quizz.dart';
 import 'package:start/screens/quizzez/external_factors_screen.dart';
 import 'package:start/screens/results/answers_summary_screen.dart';
@@ -10,17 +14,19 @@ import 'package:start/screens/factor_selector_screen.dart';
 import 'package:start/screens/home_screen.dart';
 import 'package:start/screens/quizzez/internal_factors_screen.dart';
 import 'package:start/screens/results/evaluation_results_screen.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 
-void main() {
-
+void main() async  {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => ThemeProvider()),
         ChangeNotifierProvider(create: (_) => AnswerProvider()),
       ],
-      child: MyApp(),
+      child: const MyApp(),
     ),
   );
 }
@@ -41,8 +47,16 @@ class MyApp extends StatelessWidget {
       initialRoute: '/home',
       onGenerateRoute: (settings) {
         switch (settings.name) {
+          case '/login':
+            return MaterialPageRoute(builder: (context) => const LoginScreen());
+          case '/register':
+            return MaterialPageRoute(builder: (context) => const RegisterScreen());
           case '/home':
             return MaterialPageRoute(builder: (context) => const HomeScreen());
+          case '/main':
+            return MaterialPageRoute(builder: (context) => const MainScreen());
+          case '/historial':
+            return MaterialPageRoute(builder: (context) => const HistorialScreen());
           case '/classification_questions':
             return MaterialPageRoute(builder: (context) => const ClassificationQuizScreen());
           case '/classification_result':
