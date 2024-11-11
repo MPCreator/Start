@@ -1,8 +1,8 @@
 import 'dart:convert';  // For jsonEncode and jsonDecode
 import 'package:http/http.dart' as http;
+import '../config.dart';
 
 Future<String?> fetchGeminiResponse(String prompt) async {
-  const String apiKey = 'AIzaSyALve24SgD0_zE8vNuy_XMYjzgk4_onm-0';
   const String url = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=$apiKey';
 
   final Map<String, dynamic> requestBody = {
