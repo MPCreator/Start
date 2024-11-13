@@ -105,6 +105,7 @@ class _EvaluationResultScreenState extends State<EvaluationResultScreen> {
 
     final prompt1 = '''
     Por favor, interpreta brevemente las respuestas proporcionadas para las respuestas positivas y negativas en 1 párrafo corto cada una: $answers.
+    Que sea una interpretación, no un listado de cada tipo de respuesta.
     ''';
 
     final prompt2 = '''En base a las respuestas negativas brindadas por una startup: $answers. Dame una recomendación de mejora para ellas; además, considera que para las siguientes preguntas debes añadir estas métricas en tus respuestas.
@@ -142,7 +143,7 @@ class _EvaluationResultScreenState extends State<EvaluationResultScreen> {
 
     final geminiResponse1 = await fetchGeminiResponse(prompt1);
     final geminiResponse2 = await fetchGeminiResponse(prompt2);
-    final combinedResponse = '$geminiResponse1\n$geminiResponse2';
+    final combinedResponse = '$geminiResponse1\n\n$geminiResponse2';
     print(combinedResponse);
 
     return combinedResponse;
@@ -250,12 +251,20 @@ class _EvaluationResultScreenState extends State<EvaluationResultScreen> {
                           SizedBox(height: AppSizes.customSizeHeight(context, 0.02)),
                           ElevatedButton(
                             onPressed: () async {
+                              User? currentUser = FirebaseAuth.instance.currentUser;
                               String? recommendations = cachedInterpretation ?? await fetchGeminiInterpretations(updatedJsonList);
-                              await _saveEvaluationResults(phaseResult ,evaluationResult, answers!, recommendations!);
-                              Navigator.pushNamed(context, '/factor_selector');
+
+                              await _saveEvaluationResults(phaseResult, evaluationResult, answers!, recommendations!);
+
+                              if (currentUser != null) {
+                                Navigator.pushNamed(context, '/main');
+                              } else {
+                                Navigator.pushNamed(context, '/home');
+                              }
                             },
                             child: const Text("Finalizar"),
                           ),
+
 
                         ],
                       ),

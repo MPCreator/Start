@@ -28,7 +28,7 @@ class HistorialDetalleScreen extends StatelessWidget {
                 const Divider(),
                 const Text("Respuestas:", style: TextStyle(fontSize: 18)),
                 ...historial.respuestas.map((resp) => Text(
-                    "Pregunta: ${resp.question} - Respuesta: ${resp.answer} - Evaluación: ${resp.evaluation}"))
+                    "\nPregunta: ${resp.question} - Respuesta: ${resp.answer} - Evaluación: ${resp.evaluation}"))
                     ,
               ],
             ),

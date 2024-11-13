@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import '../providers/theme_provider.dart';
 import '../utils/sizes.dart';
 
-class MainScreen extends StatelessWidget{
-
+class MainScreen extends StatelessWidget {
   const MainScreen({super.key});
 
   @override
@@ -25,6 +25,14 @@ class MainScreen extends StatelessWidget{
               themeProvider.toggleTheme();
             },
           ),
+          IconButton(
+            icon: Icon(Icons.logout), // Icono para cerrar sesión
+            onPressed: () async {
+              await FirebaseAuth.instance.signOut();
+              Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
+            },
+            tooltip: 'Cerrar sesión',
+          ),
         ],
       ),
       body: Padding(
@@ -32,7 +40,7 @@ class MainScreen extends StatelessWidget{
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // Primer botón de historial
+            // Botón de historial
             GestureDetector(
               onTap: () {
                 Navigator.pushNamed(context, '/historial');
@@ -60,7 +68,7 @@ class MainScreen extends StatelessWidget{
                           Icons.business,
                           size: AppSizes.customSizeHeight(context, 0.03),
                         ),
-                        SizedBox(width: AppSizes.customSizeWidth(context,0.02)),
+                        SizedBox(width: AppSizes.customSizeWidth(context, 0.02)),
                         Text(
                           'Historial',
                           style: Theme.of(context).textTheme.titleLarge?.copyWith(
@@ -77,7 +85,7 @@ class MainScreen extends StatelessWidget{
               ),
             ),
 
-            // Segundo botón de empezar nuevo cuestionario
+            // Botón para empezar nuevo cuestionario
             GestureDetector(
               onTap: () {
                 Navigator.pushNamed(context, '/classification_questions');
@@ -105,7 +113,7 @@ class MainScreen extends StatelessWidget{
                           Icons.lightbulb,
                           size: AppSizes.customSizeHeight(context, 0.03),
                         ),
-                        SizedBox(width: AppSizes.customSizeWidth(context,0.02)),
+                        SizedBox(width: AppSizes.customSizeWidth(context, 0.02)),
                         Text(
                           'Nuevo cuestionario',
                           style: Theme.of(context).textTheme.titleLarge?.copyWith(
@@ -121,11 +129,9 @@ class MainScreen extends StatelessWidget{
                 ),
               ),
             ),
-
           ],
         ),
       ),
     );
   }
-
 }

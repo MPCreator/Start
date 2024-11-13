@@ -1,20 +1,20 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:start/utils/sizes.dart';
 
 import '../providers/theme_provider.dart';
 
 class HomeScreen extends StatelessWidget {
-
   const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-
     final themeProvider = Provider.of<ThemeProvider>(context);
     bool isDarkMode = themeProvider.isDarkMode;
+
+    // Obtenemos el usuario autenticado
+    final User? user = FirebaseAuth.instance.currentUser;
 
     return Scaffold(
       appBar: AppBar(
@@ -35,7 +35,7 @@ class HomeScreen extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              SizedBox(height: AppSizes.customSizeHeight(context, 0.1),),
+              SizedBox(height: AppSizes.customSizeHeight(context, 0.1)),
               Text(
                 'ASISTENTE VIRTUAL \nSTART',
                 textAlign: TextAlign.center,
@@ -44,33 +44,36 @@ class HomeScreen extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-
-              SizedBox(height: AppSizes.customSizeHeight(context, 0.1),),
-
+              SizedBox(height: AppSizes.customSizeHeight(context, 0.1)),
               Image.asset(
                 'assets/logo.png',
                 height: AppSizes.customSizeHeight(context, 0.2),
               ),
-
               SizedBox(height: AppSizes.customSizeHeight(context, 0.2)),
 
+              // Botón que se adapta si hay sesión activa
               SizedBox(
                 width: AppSizes.customSizeWidth(context, 0.5),
                 height: AppSizes.customSizeHeight(context, 0.07),
-
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20),
                     ),
                   ),
+                  // Si el usuario está autenticado, redirige al Main directamente
                   onPressed: () {
-                    Navigator.pushNamed(context, '/login');
+                    if (user != null) {
+                      Navigator.pushNamed(context, '/main'); // Pantalla principal
+                    } else {
+                      Navigator.pushNamed(context, '/login'); // Pantalla de inicio de sesión
+                    }
                   },
-                  child: Text('Iniciar sesión',
+                  child: Text(
+                    user != null ? 'Continuar' : 'Iniciar sesión',
                     style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: AppSizes.customSizeHeight(context, 0.02)
+                      fontWeight: FontWeight.bold,
+                      fontSize: AppSizes.customSizeHeight(context, 0.02),
                     ),
                   ),
                 ),
@@ -81,7 +84,6 @@ class HomeScreen extends StatelessWidget {
               SizedBox(
                 width: AppSizes.customSizeWidth(context, 0.5),
                 height: AppSizes.customSizeHeight(context, 0.07),
-
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     shape: RoundedRectangleBorder(
@@ -91,10 +93,11 @@ class HomeScreen extends StatelessWidget {
                   onPressed: () {
                     Navigator.pushNamed(context, '/classification_questions');
                   },
-                  child: Text('Empezar',
+                  child: Text(
+                    'Empezar',
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
-                        fontSize: AppSizes.customSizeHeight(context, 0.02)
+                      fontSize: AppSizes.customSizeHeight(context, 0.02),
                     ),
                   ),
                 ),
